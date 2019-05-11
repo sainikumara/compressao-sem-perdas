@@ -1,4 +1,4 @@
-# Design document
+# Project Specifications
 
 This project aims to implement the lossless data compression algorithm [Deflate](https://en.wikipedia.org/wiki/DEFLATE) by first implementing [Lempel-Ziv (LZ77)](https://en.wikipedia.org/wiki/LZ77_and_LZ78) and combining it with [Huffman coding](https://en.wikipedia.org/wiki/Huffman_coding).
 
