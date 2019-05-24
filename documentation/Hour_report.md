@@ -13,3 +13,10 @@
 | 17-05-2019 | 9     | Changing from Gradle to Maven, reading about LZ77, beginning implementation   |
 | 18-05-2019 | 7     | Implementing LZ77, documenting, creating first tests, juggling project files  |
 | __total__  | __16__ |      |
+
+
+| Week 3     | hours | task                                                                                  |
+|------------|:-----:|---------------------------------------------------------------------------------------|
+| 22-05-2019 | 8     | Reading more about LZ77 implementations, starting IO implementation and fixing jacoco |
+| 24-05-2019 | 8     | Implementing IO, testing, reading about bit operations                                |
+| __total__  | __16__ |      |
