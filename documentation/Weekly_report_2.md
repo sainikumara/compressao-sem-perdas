@@ -1,6 +1,6 @@
 # Week 2
 
-## What happened during week 1
+## What happened during week 2
 - Changing from Gradle to Maven
 - Reading A LOT, trying to gain basic understanding of LZ77 and its implementations
 - Creating first version of LZ77 compression and decompression implementation
