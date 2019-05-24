@@ -10,9 +10,9 @@ import java.util.List;
 public class IO {
 
     /**
-     *
+     * Read data from file, return as a byte array.
      * @param filename
-     * @return
+     * @return data as a byte array
      */
     public byte[] readBytesFromFile(String filename) {
         String userDir = System.getProperty("user.dir");
@@ -29,9 +29,9 @@ public class IO {
     }
 
     /**
-     *
+     * Read a string from a file using readBytesFromFile
      * @param filename
-     * @return
+     * @return the data as a string
      */
     public String stringFromFile(String filename) {
         String dataAsString = new String(readBytesFromFile(filename));
@@ -39,7 +39,7 @@ public class IO {
     }
 
     /**
-     *
+     * Write dictionary to file. Convert it first into a byte array and write as such.
      * @param filename
      * @param dataToWrite
      */
@@ -55,7 +55,7 @@ public class IO {
     }
 
     /**
-     * 
+     * Write text to file. This method exists for testing purposes.
      * @param filename
      * @param textToWrite 
      */
@@ -71,9 +71,9 @@ public class IO {
     }
 
     /**
-     *
-     * @param dataToConvert
-     * @return
+     * Convert a dictionary into a data array for writing into file. Each field in each entry takes up one byte in the array.
+     * @param dataToConvert the dictionary to be converted
+     * @return dictionary  data as a byte array
      */
     public byte[] convertDictionaryToByteArray(List<LZ77DictionaryEntry> dataToConvert) {
         byte[] dataAsBytes = new byte[3 * dataToConvert.size()];
@@ -90,9 +90,9 @@ public class IO {
     }
 
     /**
-     *
+     * Read dictionary that has been written to a file
      * @param filename
-     * @return
+     * @return dictionary (as a list of LZ77DictionaryEntries)
      */
     public List<LZ77DictionaryEntry> compressedDataFromFile(String filename) {
         byte[] dataAsBytes = this.readBytesFromFile(filename);
