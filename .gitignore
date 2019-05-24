@@ -23,3 +23,6 @@
 hs_err_pid*
 /CompressaoSemPerdas/target/
 /CompressaoSemPerdas/nbproject/
+
+/CompressaoSemPerdas/resources/
+/CompressaoSemPerdas/test*
