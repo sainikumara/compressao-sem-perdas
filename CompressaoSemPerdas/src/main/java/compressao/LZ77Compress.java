@@ -33,7 +33,6 @@ public class LZ77Compress {
                 searchSubstring = stringToCompress.substring(searchWindowStart, charPointer);
             }
 
-            int matchPosition;
             String searchTarget = stringToCompress.substring(charPointer, charPointer + 1);
 
             if (searchSubstring.contains(searchTarget)) {
@@ -48,7 +47,7 @@ public class LZ77Compress {
                     }
                 }
 
-                matchPosition = searchSubstring.indexOf(stringToCompress.substring(charPointer, charPointer + matchingStringLength));
+                int matchPosition = searchSubstring.indexOf(stringToCompress.substring(charPointer, charPointer + matchingStringLength));
                 charPointer += matchingStringLength;
 
                 offsetToBeginningOfMatch = (charPointer < (searchWindowLength + matchingStringLength))

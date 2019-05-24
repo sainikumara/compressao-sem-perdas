@@ -11,19 +11,20 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class LZ77Test {
+
     String string1ToCompress;
     String string2ToCompress;
-    int searchWindowLength ;
+    int searchWindowLength;
     int lookAheadWindowLength;
     LZ77Compress compressor;
     LZ77Decompress decompressor;
-    
+
     public LZ77Test() {
     }
 
     @BeforeClass
     public static void setUpClass() {
-        
+
     }
 
     @AfterClass
@@ -54,18 +55,41 @@ public class LZ77Test {
         assertEquals(860, dictionary1Size);
         assertEquals(296, dictionary2Size);
     }
-    
+
     @Test
     public void compressionIsLossless() {
         ArrayList<LZ77DictionaryEntry> dictionary = compressor.compress(string1ToCompress, searchWindowLength, lookAheadWindowLength);
         ArrayList<LZ77DictionaryEntry> dictionary2 = compressor.compress(string2ToCompress, searchWindowLength, lookAheadWindowLength);
-        
+
         String decompressedString = decompressor.decompress(dictionary);
         String decompressedString2 = decompressor.decompress(dictionary2);
-        
+
         assertEquals(string1ToCompress, decompressedString);
         assertEquals(string2ToCompress, decompressedString2);
-        
+
     }
 
+    @Test
+    public void dictionaryItemHasCorrectProperties() {
+        ArrayList<LZ77DictionaryEntry> dictionary = compressor.compress(string1ToCompress, searchWindowLength, lookAheadWindowLength);
+
+        assertEquals(0, dictionary.get(0).getOffset());
+        assertEquals(77, dictionary.get(300).getOffset());
+        assertEquals(117, dictionary.get(700).getOffset());
+        assertEquals(1, dictionary.get(200).getmatchLength());
+        assertEquals(2, dictionary.get(500).getmatchLength());
+        assertEquals(2, dictionary.get(800).getmatchLength());
+        assertEquals(',', dictionary.get(100).getFollowingChar());
+        assertEquals('g', dictionary.get(400).getFollowingChar());
+        assertEquals('i', dictionary.get(600).getFollowingChar());
+    }
+
+    @Test
+    public void dictionaryToStringWorksProperly() {
+        ArrayList<LZ77DictionaryEntry> dictionary = compressor.compress(string1ToCompress, searchWindowLength, lookAheadWindowLength);
+
+        assertEquals("0,0,T", dictionary.get(0).toString());
+        assertEquals("77,2, ", dictionary.get(300).toString());
+        assertEquals("117,1,v", dictionary.get(700).toString());
+    }
 }

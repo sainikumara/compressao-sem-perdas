@@ -15,6 +15,18 @@ public class LZ77DictionaryEntry {
         this.charFollowingMatch = followingChar;
     }
 
+    public int getOffset() {
+        return this.offsetToBeginningOfMatch;
+    }
+
+    public int getmatchLength() {
+        return this.matchingStringLength;
+    }
+
+    public char getFollowingChar() {
+        return this.charFollowingMatch;
+    }
+
     @Override
     public String toString() {
         return offsetToBeginningOfMatch + "," + matchingStringLength + "," + charFollowingMatch;

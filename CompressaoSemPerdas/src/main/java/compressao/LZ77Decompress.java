@@ -1,6 +1,6 @@
 package compressao;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class LZ77Decompress {
 
@@ -10,7 +10,7 @@ public class LZ77Decompress {
      * @param dictionary: the compressed form of the original string
      * @return the reconstructed string
      */
-    public String decompress(ArrayList<LZ77DictionaryEntry> dictionary) {
+    public String decompress(List<LZ77DictionaryEntry> dictionary) {
         StringBuffer reconstructString = new StringBuffer();
 
         for (LZ77DictionaryEntry entry : dictionary) {
