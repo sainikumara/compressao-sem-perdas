@@ -7,6 +7,7 @@ Data structures and algorithms Java project, implementing LZ77 with Huffman codi
 - [Week 1](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Weekly_report_1.md)
 - [Week 2](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Weekly_report_2.md)
 - [Week 3](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Weekly_report_3.md)
+- [Week 4](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Weekly_report_4.md)
 
 
 ## [Hour reporting](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Hour_report.md)
