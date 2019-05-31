@@ -20,3 +20,9 @@
 | 22-05-2019 | 8     | Reading more about LZ77 implementations, starting IO implementation and fixing jacoco |
 | 24-05-2019 | 8     | Implementing IO, testing, reading about bit operations                                |
 | __total__  | __16__ |      |
+
+
+| Week 4     | hours | task                                                                                  |
+|------------|:-----:|---------------------------------------------------------------------------------------|
+| 31-05-2019 | 11     | Reading more about LZ77 implementations, implementing byte based version of the algorithm |
+| __total__  | __11__ |      |
