@@ -43,31 +43,10 @@ public class IO {
      * @param filename
      * @param dataToWrite
      */
-    public void writeDictionaryToFile(String filename, List<LZ77DictionaryEntry> dataToWrite) {
+    public void writeStringBasedDictionaryToFile(String filename, List<LZ77DictionaryEntry> dataToWrite) {
         byte[] dataAsBytes = this.convertDictionaryToByteArray(dataToWrite);
 
-        String userDir = System.getProperty("user.dir");
-        try {
-            Files.write(Paths.get(userDir, filename), dataAsBytes);
-        } catch (IOException e) {
-            System.out.println("caught exception: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Write text to file. This method exists for testing purposes.
-     * @param filename
-     * @param textToWrite 
-     */
-    public void writeTextToFile(String filename, String textToWrite) {
-        String userDir = System.getProperty("user.dir");
-        Charset charset = Charset.forName("US-ASCII");
-
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(userDir, filename), charset)) {
-            writer.write(textToWrite, 0, textToWrite.length());
-        } catch (IOException e) {
-            System.out.println("caught exception: " + e.getMessage());
-        }
+        this.writeBytesToFile(filename, dataAsBytes);
     }
 
     /**
@@ -90,11 +69,42 @@ public class IO {
     }
 
     /**
-     * Read dictionary that has been written to a file
+     * Write any data in byte array form into a file
+     * @param filename
+     * @param dataToWrite 
+     */
+    public void writeBytesToFile(String filename, byte[] dataToWrite) {
+
+        String userDir = System.getProperty("user.dir");
+        try {
+            Files.write(Paths.get(userDir, filename), dataToWrite);
+        } catch (IOException e) {
+            System.out.println("caught exception: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Write text to file. This method exists for testing purposes.
+     * @param filename
+     * @param textToWrite 
+     */
+    public void writeTextToFile(String filename, String textToWrite) {
+        String userDir = System.getProperty("user.dir");
+        Charset charset = Charset.forName("US-ASCII");
+
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(userDir, filename), charset)) {
+            writer.write(textToWrite, 0, textToWrite.length());
+        } catch (IOException e) {
+            System.out.println("caught exception: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Read string based dictionary that has been written to a file
      * @param filename
      * @return dictionary (as a list of LZ77DictionaryEntries)
      */
-    public List<LZ77DictionaryEntry> compressedDataFromFile(String filename) {
+    public List<LZ77DictionaryEntry> compressedStringBasedDataFromFile(String filename) {
         byte[] dataAsBytes = this.readBytesFromFile(filename);
         List<LZ77DictionaryEntry> dictionary = new ArrayList<>();
 
