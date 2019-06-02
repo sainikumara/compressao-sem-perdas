@@ -8,13 +8,13 @@ public class LZ77Decompress {
     /**
      * LZ77 decompression implementation for String form data
      *
-     * @param dictionary: the compressed form of the original string
+     * @param compressed: the compressed form of the original string
      * @return the reconstructed string
      */
-    public String decompressString(List<LZ77DictionaryEntry> dictionary) {
+    public String decompressString(List<LZ77CompressedEntry> compressed) {
         StringBuffer reconstructString = new StringBuffer();
 
-        for (LZ77DictionaryEntry entry : dictionary) {
+        for (LZ77CompressedEntry entry : compressed) {
             if (entry.matchingStringLength == 0) {
                 reconstructString.append(entry.charFollowingMatch);
             } else {
@@ -32,17 +32,17 @@ public class LZ77Decompress {
     /**
      * LZ77 decompression implementation for byte array form data
      * 
-     * @param dictionary: the compressed form of the original byte array
-     * @return byte array that has been reconstructed from compressed dictionary
+     * @param compressed: the compressed form of the original byte array
+     * @return byte array that has been reconstructed from compressed data
      */
-    public byte[] decompressBytes(byte[] dictionary) {
-        byte[] reconstructBytes = new byte[3 * dictionary.length];
+    public byte[] decompressBytes(byte[] compressed) {
+        byte[] reconstructBytes = new byte[3 * compressed.length];
         int bytePointer = 0;
 
-        for (int i = 0; i < dictionary.length; i+=3) {
-            int offsetToBeginningOfMatch = (int) dictionary[i];
-            int matchingBytesLength = (int) dictionary[i+1];
-            byte byteFollowingMatch = dictionary[i+2];
+        for (int i = 0; i < compressed.length; i+=3) {
+            int offsetToBeginningOfMatch = (int) compressed[i];
+            int matchingBytesLength = (int) compressed[i+1];
+            byte byteFollowingMatch = compressed[i+2];
 
             if (matchingBytesLength > 0) {
                 for (int j = 0; j < matchingBytesLength; j++) {

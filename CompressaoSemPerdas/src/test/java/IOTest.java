@@ -2,7 +2,7 @@
 import compressao.IO;
 import compressao.LZ77Compress;
 import compressao.LZ77Decompress;
-import compressao.LZ77DictionaryEntry;
+import compressao.LZ77CompressedEntry;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -52,14 +52,14 @@ public class IOTest {
     
     @Test
     public void writingDictionaryToAndReadingFromFilesWorks() {
-        List<LZ77DictionaryEntry> originaDictionary = compressor.compressString(stringToHandle, 127, 7);
-        io.writeStringBasedDictionaryToFile("test-compressed-output1", originaDictionary);
-        List<LZ77DictionaryEntry> dictionaryFromFile = io.compressedStringBasedDataFromFile("test-compressed-output1");
-        String decompressedString1 = decompressor.decompressString(dictionaryFromFile);
+        List<LZ77CompressedEntry> originaCompressedData = compressor.compressString(stringToHandle, 127, 7);
+        io.writeCompressedStringToFile("test-compressed-output1", originaCompressedData);
+        List<LZ77CompressedEntry> compressedDataFromFile = io.compressedStringBasedDataFromFile("test-compressed-output1");
+        String decompressedString1 = decompressor.decompressString(compressedDataFromFile);
         
         byte[] bytesToCompress = io.readBytesFromFile("test1");
-        byte[] byteBasedDictionary = compressor.compressBytes(bytesToCompress, 127, 7);
-        io.writeBytesToFile("test-compressed-output2", byteBasedDictionary);
+        byte[] byteBasedCompressedData = compressor.compressBytes(bytesToCompress, 127, 7);
+        io.writeBytesToFile("test-compressed-output2", byteBasedCompressedData);
         byte[] bytesFromFile = io.readBytesFromFile("test-compressed-output2");
         byte[] decompressedBytes = decompressor.decompressBytes(bytesFromFile);
         io.writeBytesToFile("test-decompressed-output", decompressedBytes);

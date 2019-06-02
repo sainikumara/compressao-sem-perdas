@@ -11,10 +11,10 @@ public class LZ77Compress {
      * @param stringToCompress: original string
      * @param searchWindowLength
      * @param lookAheadWindowLength
-     * @return dictionary: compressed form of the string
+     * @return compressed: compressed form of the string
      */
-    public ArrayList<LZ77DictionaryEntry> compressString(String stringToCompress, int searchWindowLength, int lookAheadWindowLength) {
-        ArrayList<LZ77DictionaryEntry> dictionary = new ArrayList<>();
+    public ArrayList<LZ77CompressedEntry> compressString(String stringToCompress, int searchWindowLength, int lookAheadWindowLength) {
+        ArrayList<LZ77CompressedEntry> compressed = new ArrayList<>();
         String searchSubstring;
 
         int charPointer = 0;
@@ -57,12 +57,12 @@ public class LZ77Compress {
             }
 
             char charFollowingMatch = stringToCompress.charAt(charPointer);
-            dictionary.add(new LZ77DictionaryEntry(offsetToBeginningOfMatch, matchingStringLength, charFollowingMatch));
+            compressed.add(new LZ77CompressedEntry(offsetToBeginningOfMatch, matchingStringLength, charFollowingMatch));
 
             charPointer++;
         }
 
-        return dictionary;
+        return compressed;
     }
 
     /**
@@ -71,11 +71,11 @@ public class LZ77Compress {
      * @param bytesToCompress: original byte array
      * @param searchWindowLength
      * @param lookAheadWindowLength
-     * @return dictionary: compressed form as byte array
+     * @return compressed: compressed form as byte array
      */
     public byte[] compressBytes(byte[] bytesToCompress, int searchWindowLength, int lookAheadWindowLength) {
-        byte[] dictionary = new byte[3 * bytesToCompress.length];
-        int dictionaryPointer = 0;
+        byte[] compressed = new byte[3 * bytesToCompress.length];
+        int pointerForCompressedData = 0;
         byte[] searchSubArray;
 
         int bytePointer = 0;
@@ -117,16 +117,16 @@ public class LZ77Compress {
                         : searchWindowLength - matchPosition;
             }
 
-            dictionary[dictionaryPointer++] = (byte) offsetToBeginningOfMatch;
-            dictionary[dictionaryPointer++] = (byte) matchingBytesLength;
-            dictionary[dictionaryPointer++] = bytesToCompress[bytePointer];
+            compressed[pointerForCompressedData++] = (byte) offsetToBeginningOfMatch;
+            compressed[pointerForCompressedData++] = (byte) matchingBytesLength;
+            compressed[pointerForCompressedData++] = bytesToCompress[bytePointer];
             
             bytePointer++;
         }
         
-        dictionary = Arrays.copyOfRange(dictionary, 0, dictionaryPointer);
+        compressed = Arrays.copyOfRange(compressed, 0, pointerForCompressedData);
 
-        return dictionary;
+        return compressed;
     }
 
     /**

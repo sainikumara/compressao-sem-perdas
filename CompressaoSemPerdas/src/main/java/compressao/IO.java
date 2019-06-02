@@ -39,22 +39,23 @@ public class IO {
     }
 
     /**
-     * Write dictionary to file. Convert it first into a byte array and write as such.
+     * Write compressed data to file. Convert it first into a byte array and write as such.
      * @param filename
      * @param dataToWrite
      */
-    public void writeStringBasedDictionaryToFile(String filename, List<LZ77DictionaryEntry> dataToWrite) {
-        byte[] dataAsBytes = this.convertDictionaryToByteArray(dataToWrite);
+    public void writeCompressedStringToFile(String filename, List<LZ77CompressedEntry> dataToWrite) {
+        byte[] dataAsBytes = this.convertListToByteArray(dataToWrite);
 
         this.writeBytesToFile(filename, dataAsBytes);
     }
 
     /**
-     * Convert a dictionary into a data array for writing into file. Each field in each entry takes up one byte in the array.
-     * @param dataToConvert the dictionary to be converted
-     * @return dictionary  data as a byte array
+     * Convert list of LZ77CompressedEntries into a data array for writing into file.
+     * Each field in each entry takes up one byte in the array.
+     * @param dataToConvert the list to be converted
+     * @return data from the list as a byte array
      */
-    public byte[] convertDictionaryToByteArray(List<LZ77DictionaryEntry> dataToConvert) {
+    public byte[] convertListToByteArray(List<LZ77CompressedEntry> dataToConvert) {
         byte[] dataAsBytes = new byte[3 * dataToConvert.size()];
 
         int j = 0;
@@ -100,20 +101,20 @@ public class IO {
     }
 
     /**
-     * Read string based dictionary that has been written to a file
+     * Read string based compressed data that has been written to a file
      * @param filename
-     * @return dictionary (as a list of LZ77DictionaryEntries)
+     * @return compressed data (as a list of LZ77CompressedEntries)
      */
-    public List<LZ77DictionaryEntry> compressedStringBasedDataFromFile(String filename) {
+    public List<LZ77CompressedEntry> compressedStringBasedDataFromFile(String filename) {
         byte[] dataAsBytes = this.readBytesFromFile(filename);
-        List<LZ77DictionaryEntry> dictionary = new ArrayList<>();
+        List<LZ77CompressedEntry> compressed = new ArrayList<>();
 
         for (int i = 0; i < dataAsBytes.length; i += 3) {
             int offsetToBeginningOfMatch = dataAsBytes[i];
             int matchingStringLength = dataAsBytes[i + 1];
             char charFollowingMatch = (char) dataAsBytes[i + 2];
-            dictionary.add(
-                    new LZ77DictionaryEntry(
+            compressed.add(
+                    new LZ77CompressedEntry(
                             offsetToBeginningOfMatch,
                             matchingStringLength,
                             charFollowingMatch
@@ -121,6 +122,6 @@ public class IO {
             );
         }
 
-        return dictionary;
+        return compressed;
     }
 }
