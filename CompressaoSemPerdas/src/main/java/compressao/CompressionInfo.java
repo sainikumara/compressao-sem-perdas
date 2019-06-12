@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class CompressionInfo {
     /**
+     * NOT IN USE!
      * Shows information on how successful the compression was: the size of the
      * resulting compressed data and the compression ratio
      * 

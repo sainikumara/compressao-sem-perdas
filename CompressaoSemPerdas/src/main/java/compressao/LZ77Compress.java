@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class LZ77Compress {
 
     /**
+     * NOT IN USE!
      * LZ77 compression implementation for String
      *
      * @param stringToCompress: original string

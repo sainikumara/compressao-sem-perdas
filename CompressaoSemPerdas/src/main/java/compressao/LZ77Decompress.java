@@ -1,11 +1,13 @@
 package compressao;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 public class LZ77Decompress {
 
     /**
+     * NOT IN USE!
      * LZ77 decompression implementation for String form data
      *
      * @param compressed: the compressed form of the original string
@@ -34,10 +36,10 @@ public class LZ77Decompress {
      * 
      * @param compressed: the compressed form of the original byte array
      * @return byte array that has been reconstructed from compressed data
-     * @throws java.lang.Exception
+     * @throws java.io.IOException
      */
-    public byte[] decompressBytes(byte[] compressed) throws Exception {
-        byte[] reconstructBytes = new byte[3 * compressed.length];
+    public byte[] decompressBytes(byte[] compressed) throws IOException {
+        byte[] reconstructBytes = new byte[10 * compressed.length];
         int bytePointer = 0;
 
         for (int i = 0; i < compressed.length; i+=3) {
