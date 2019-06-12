@@ -22,7 +22,7 @@ public class IO {
         try {
             dataAsBytes = Files.readAllBytes(Paths.get(userDir, filename));
         } catch (IOException e) {
-            System.out.println("caught exception: " + e.getMessage());
+            System.out.println("Seems like the file does not exist: " + e.getMessage());
         }
 
         return dataAsBytes;
