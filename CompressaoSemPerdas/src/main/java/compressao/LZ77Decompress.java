@@ -34,8 +34,9 @@ public class LZ77Decompress {
      * 
      * @param compressed: the compressed form of the original byte array
      * @return byte array that has been reconstructed from compressed data
+     * @throws java.lang.Exception
      */
-    public byte[] decompressBytes(byte[] compressed) {
+    public byte[] decompressBytes(byte[] compressed) throws Exception {
         byte[] reconstructBytes = new byte[3 * compressed.length];
         int bytePointer = 0;
 
