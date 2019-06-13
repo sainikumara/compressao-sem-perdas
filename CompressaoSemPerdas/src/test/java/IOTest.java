@@ -2,8 +2,7 @@
 import compressao.IO;
 import compressao.LZ77Compress;
 import compressao.LZ77Decompress;
-import compressao.LZ77CompressedEntry;
-import java.util.List;
+import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -52,21 +51,20 @@ public class IOTest {
     
     @Test
     public void writingDictionaryToAndReadingFromFilesWorks() {
-        List<LZ77CompressedEntry> originaCompressedData = compressor.compressString(stringToHandle, 127, 7);
-        io.writeCompressedStringToFile("test-compressed-output1", originaCompressedData);
-        List<LZ77CompressedEntry> compressedDataFromFile = io.compressedStringBasedDataFromFile("test-compressed-output1");
-        String decompressedString1 = decompressor.decompressString(compressedDataFromFile);
-        
         byte[] bytesToCompress = io.readBytesFromFile("test1");
         byte[] byteBasedCompressedData = compressor.compressBytes(bytesToCompress, 127, 7);
         io.writeBytesToFile("test-compressed-output2", byteBasedCompressedData);
         byte[] bytesFromFile = io.readBytesFromFile("test-compressed-output2");
-        byte[] decompressedBytes = decompressor.decompressBytes(bytesFromFile);
+        byte[] decompressedBytes = new byte[0];
+        try {
+            decompressedBytes = decompressor.decompressBytes(bytesFromFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         io.writeBytesToFile("test-decompressed-output", decompressedBytes);
         
         String decompressedString2 = io.stringFromFile("test-decompressed-output");
 
-        assertEquals(stringToHandle, decompressedString1);
         assertEquals(stringToHandle, decompressedString2);
     }
 }

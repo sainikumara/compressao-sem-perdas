@@ -1,35 +1,9 @@
 package compressao;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 public class LZ77Decompress {
-
-    /**
-     * NOT IN USE!
-     * LZ77 decompression implementation for String form data
-     *
-     * @param compressed: the compressed form of the original string
-     * @return the reconstructed string
-     */
-    public String decompressString(List<LZ77CompressedEntry> compressed) {
-        StringBuffer reconstructString = new StringBuffer();
-
-        for (LZ77CompressedEntry entry : compressed) {
-            if (entry.matchingStringLength == 0) {
-                reconstructString.append(entry.charFollowingMatch);
-            } else {
-                for (int i = 0; i < entry.matchingStringLength; i++) {
-                    char charToAdd = reconstructString.charAt(reconstructString.length() - entry.offsetToBeginningOfMatch);
-                    reconstructString.append(charToAdd);
-                }
-                reconstructString.append(entry.charFollowingMatch);
-            }
-        }
-
-        return new String(reconstructString);
-    }
+    ArrayCopier arrayCopier = new ArrayCopier();
 
     /**
      * LZ77 decompression implementation for byte array form data
@@ -55,7 +29,7 @@ public class LZ77Decompress {
             reconstructBytes[bytePointer++] = byteFollowingMatch;
         }
 
-        reconstructBytes = Arrays.copyOfRange(reconstructBytes, 0, bytePointer);
+        reconstructBytes = arrayCopier.copyOfRange(reconstructBytes, 0, bytePointer);
         return reconstructBytes;
     }
 }
