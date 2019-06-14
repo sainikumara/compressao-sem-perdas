@@ -37,4 +37,5 @@
 |------------|:-----:|---------------------------------------------------------------------------------------|
 | 12-06-2019 | 8     | Continuing reading about bit operations, creating command-line user interface. |
 | 13-06-2019 | 7     | Refactoring project, removing unused parts, reading more about bit operations implementations |
+| 14-06-2019 | 3     | Refactoring further, fixing erroneus parts, writing new tests |
 | __total__  | __15__ |      |
