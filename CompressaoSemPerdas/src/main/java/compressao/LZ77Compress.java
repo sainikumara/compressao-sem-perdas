@@ -106,22 +106,20 @@ public class LZ77Compress {
      * @param searchTarget
      * @return true if the sub array contains the search target, false otherwise
      */
-    private boolean searchSubArrayContainsSearchTarget(byte[] searchSubArray, byte[] searchTarget) {
+    public boolean searchSubArrayContainsSearchTarget(byte[] searchSubArray, byte[] searchTarget) {
         int targetPointer = 0;
         int searchWindowPointer = 0;
         boolean startedFindingTarget = false;
 
         while (targetPointer < searchTarget.length && searchWindowPointer < searchSubArray.length) {
-            if (searchTarget[targetPointer] != searchSubArray[searchWindowPointer]) {
-                if (startedFindingTarget) {
-                    break;
-                }
-                searchWindowPointer++;
-            } else {
-                searchWindowPointer++;
+            if (searchTarget[targetPointer] == searchSubArray[searchWindowPointer]) {
                 targetPointer++;
                 startedFindingTarget = true;
+            } else if (startedFindingTarget) {
+                targetPointer = 0;
+                startedFindingTarget = false;
             }
+            searchWindowPointer++;
         }
         return targetPointer == searchTarget.length;
     }
