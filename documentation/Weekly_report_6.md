@@ -5,13 +5,14 @@
 - Reading a lot
 - Creating a command-line user interface
 - Refactoring project and removing several unused parts
+- Fixing erroneus parts
 
 ## What I learned
 - I learned a lot about bit operations
+- New eyes on the code are invaluable
 
 ## Questions
 - 
 
 ## Next
 - Bit operations and file size optimization
-- Looking into Huffman coding?
