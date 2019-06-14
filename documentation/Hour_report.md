@@ -26,3 +26,15 @@
 |------------|:-----:|---------------------------------------------------------------------------------------|
 | 31-05-2019 | 11     | Reading more about LZ77 implementations, implementing byte based version of the algorithm |
 | __total__  | __11__ |      |
+
+| Week 5     | hours | task                                                                                  |
+|------------|:-----:|---------------------------------------------------------------------------------------|
+| 07-06-2019 | 7     | Reading about bit operations, trying to find intelligible information relevant to LZ77 |
+| __total__  | __7__ |      |
+
+
+| Week 6     | hours | task                                                                                  |
+|------------|:-----:|---------------------------------------------------------------------------------------|
+| 12-06-2019 | 8     | Continuing reading about bit operations, creating command-line user interface. |
+| 13-06-2019 | 7     | Refactoring project, removing unused parts, reading more about bit operations implementations |
+| __total__  | __15__ |      |
