@@ -131,8 +131,7 @@ public class LZ77Compress {
      * @param searchTarget
      * @return the index as integer
      */
-    private int searchSubArrayIndexOfSearchTarget(byte[] searchSubArray, byte[] searchTarget) {
-        int index = 0;
+    public int searchSubArrayIndexOfSearchTarget(byte[] searchSubArray, byte[] searchTarget) {
         boolean contains = false;
         for (int i = 0; i < searchSubArray.length; i++) {
             for (int j = 0; j < searchTarget.length; j++) {
@@ -147,11 +146,10 @@ public class LZ77Compress {
                 }
             }
             if (contains) {
-                index = i;
                 return i;
             }
         }
-        return index;
+        return -1;
     }
 
 }

@@ -50,14 +50,38 @@ public class LZ77Test {
     }
 
     @Test
+    public void searchSubArrayContainsSearchTargetWorks() {
+        byte[] window = "a abc".getBytes();
+        byte[] target1 = "a".getBytes();
+        byte[] target2 = "ab".getBytes();
+        byte[] target3 = "ac".getBytes();
+
+        assertTrue(compressor.searchSubArrayContainsSearchTarget(window, target1));
+        assertTrue(compressor.searchSubArrayContainsSearchTarget(window, target2));
+        assertFalse(compressor.searchSubArrayContainsSearchTarget(window, target3));
+    }
+
+    @Test
+    public void searchSubArrayIndexOfSearchTargetWorks() {
+        byte[] window = "a abc".getBytes();
+        byte[] target1 = "a".getBytes();
+        byte[] target2 = "ab".getBytes();
+        byte[] target3 = "ac".getBytes();
+
+        assertEquals(0, compressor.searchSubArrayIndexOfSearchTarget(window, target1));
+        assertEquals(2, compressor.searchSubArrayIndexOfSearchTarget(window, target2));
+        assertEquals(-1, compressor.searchSubArrayIndexOfSearchTarget(window, target3));
+    }
+
+    @Test
     public void correctAmountOfEntriesInCompressedData() {
         byte[] compressed1 = compressor.compressBytes(string1AsBytes, searchWindowLength, lookAheadWindowLength);
         int compressed1Size = compressed1.length;
         byte[] compressed2 = compressor.compressBytes(string2AsBytes, searchWindowLength, lookAheadWindowLength);
         int compressed2Size = compressed2.length;
 
-        assertEquals(3339, compressed1Size);
-        assertEquals(1104, compressed2Size);
+        assertEquals(2580, compressed1Size);
+        assertEquals(918, compressed2Size);
     }
 
     @Test
