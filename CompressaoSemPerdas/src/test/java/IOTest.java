@@ -50,7 +50,7 @@ public class IOTest {
     }
     
     @Test
-    public void writingDictionaryToAndReadingFromFilesWorks() {
+    public void writingCompressedDataToAndReadingFromFilesWorks() {
         byte[] bytesToCompress = io.readBytesFromFile("test1");
         byte[] byteBasedCompressedData = compressor.compressBytes(bytesToCompress, 127, 7);
         io.writeBytesToFile("test-compressed-output2", byteBasedCompressedData);

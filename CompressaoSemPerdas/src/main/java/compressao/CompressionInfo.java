@@ -1,29 +1,26 @@
 package compressao;
 
-import java.util.ArrayList;
-
 public class CompressionInfo {
     /**
-     * NOT IN USE!
-     * Shows information on how successful the compression was: the size of the
-     * resulting compressed data and the compression ratio
+     * Print out info on how the compression succeeded
      * 
-     * @param stringToCompress: original string
-     * @param compressed: compressed form of the string
-     * @param searchWindowLength
-     * @param lookAheadWindowLength 
+     * @param fileToCompress
+     * @param compressedFile 
      */
-    public void LZ77Info(String stringToCompress,
-            ArrayList<LZ77CompressedEntry> compressed,
-            int searchWindowLength,
-            int lookAheadWindowLength) {
-        int bitsPerEntry = Integer.bitCount(searchWindowLength) 
-                + Integer.bitCount(lookAheadWindowLength) + 8;
-        int compressedDataSizeInBits = bitsPerEntry * compressed.size();
-        int stringSizeInBits = 8 * stringToCompress.length();
-        double relativeCompression = (double) compressedDataSizeInBits / stringSizeInBits;
+    public void LZ77Info(String fileToCompress, String compressedFile) {
+        IO io = new IO();
+        byte[] bytesToCompress = io.readBytesFromFile(fileToCompress);
+        byte[] bytesFromCompressedFile = io.readBytesFromFile(compressedFile);
+        
+        double relativeCompression = (double) bytesFromCompressedFile.length / bytesToCompress.length;
 
-        System.out.println("Compressed data size: " + compressed.size());
+        System.out.println("Original file size: " + bytesToCompress.length);
+        System.out.println("Compressed data size: " + bytesFromCompressedFile.length);
         System.out.println("Relative compression: " + relativeCompression);
+        if (relativeCompression >= 1) {
+            System.out.println("Compression was unsuccessful");
+        } else {
+            System.out.println("Compression was successful");
+        }
     }
 }

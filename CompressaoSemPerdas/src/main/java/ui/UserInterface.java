@@ -1,5 +1,6 @@
 package ui;
 
+import compressao.CompressionInfo;
 import compressao.IO;
 import compressao.LZ77Compress;
 import compressao.LZ77Decompress;
@@ -11,12 +12,14 @@ public class UserInterface {
     IO io;
     LZ77Compress compressor;
     LZ77Decompress decompressor;
+    CompressionInfo info;
 
     public UserInterface() {
         scanner = new Scanner(System.in);
         io = new IO();
         compressor = new LZ77Compress();
         decompressor = new LZ77Decompress();
+        info = new CompressionInfo();
     }
 
     /**
@@ -58,6 +61,11 @@ public class UserInterface {
         int lookAheadWindowLength = 7;
 
         byte[] bytesToCompress = io.readBytesFromFile(filename);
+        if (bytesToCompress == null) {
+            System.out.println("No readable file.");
+            return;
+        }
+
         byte[] compressedData = compressor.compressBytes(bytesToCompress, searchWindowLength, lookAheadWindowLength);
 
         String compressedFilename = formatFilename(filename, ".", "_compressed");
@@ -65,6 +73,8 @@ public class UserInterface {
 
         System.out.println("");
         System.out.println("The compressed data from " + filename + " was written into: " + compressedFilename);
+
+        info.LZ77Info(filename, compressedFilename);
     }
 
     /**
@@ -93,9 +103,9 @@ public class UserInterface {
     }
 
     /**
-     * Formats a new filename for the compressed or decompressed file,
-     * based on the original filename
-     * 
+     * Formats a new filename for the compressed or decompressed file, based on
+     * the original filename
+     *
      * @param filename
      * @param partToRemove
      * @param partToAdd
