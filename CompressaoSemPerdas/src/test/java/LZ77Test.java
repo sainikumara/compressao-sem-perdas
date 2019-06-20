@@ -55,10 +55,15 @@ public class LZ77Test {
         byte[] target1 = "a".getBytes();
         byte[] target2 = "ab".getBytes();
         byte[] target3 = "ac".getBytes();
-
-        assertTrue(compressor.searchSubArrayContainsSearchTarget(window, target1));
-        assertTrue(compressor.searchSubArrayContainsSearchTarget(window, target2));
-        assertFalse(compressor.searchSubArrayContainsSearchTarget(window, target3));
+        
+        compressor.setSearchWindow(window);
+        
+        compressor.setSearchTarget(target1);
+        assertTrue(compressor.searchWindowContainsSearchTarget());
+        compressor.setSearchTarget(target2);
+        assertTrue(compressor.searchWindowContainsSearchTarget());
+        compressor.setSearchTarget(target3);
+        assertFalse(compressor.searchWindowContainsSearchTarget());
     }
 
     @Test
@@ -68,9 +73,14 @@ public class LZ77Test {
         byte[] target2 = "ab".getBytes();
         byte[] target3 = "ac".getBytes();
 
-        assertEquals(0, compressor.searchSubArrayIndexOfSearchTarget(window, target1));
-        assertEquals(2, compressor.searchSubArrayIndexOfSearchTarget(window, target2));
-        assertEquals(-1, compressor.searchSubArrayIndexOfSearchTarget(window, target3));
+        compressor.setSearchWindow(window);
+        
+        compressor.setSearchTarget(target1);
+        assertEquals(0, compressor.searchWindowIndexOfSearchTarget());
+        compressor.setSearchTarget(target2);
+        assertEquals(2, compressor.searchWindowIndexOfSearchTarget());
+        compressor.setSearchTarget(target3);
+        assertEquals(-1, compressor.searchWindowIndexOfSearchTarget());
     }
 
     @Test
@@ -92,8 +102,8 @@ public class LZ77Test {
         String decompressedString2 = "";
 
         try {
-            decompressedString1 = new String(decompressor.decompressBytes(compressed1));
-            decompressedString2 = new String(decompressor.decompressBytes(compressed2));
+            decompressedString1 = new String(decompressor.decompressData(compressed1));
+            decompressedString2 = new String(decompressor.decompressData(compressed2));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,118 +1,156 @@
 package compressao;
 
 public class LZ77Compress {
+
     ArrayCopier arrayCopier = new ArrayCopier();
+    byte[] compressedData;
+    int compressedDataPointer;
+    byte[] searchWindow;
+    byte[] searchTarget;
+    int originalDataPointer;
+    int searchWindowStart;
 
     /**
      * LZ77 compression implementation for byte array
      *
-     * @param bytesToCompress: original byte array
+     * @param originalData: original byte array
      * @param searchWindowLength
      * @param lookAheadWindowLength
-     * @return compressed: compressed form as byte array
+     * @return compressedData: compressed data as byte array
      */
-    public byte[] compressBytes(byte[] bytesToCompress, int searchWindowLength, int lookAheadWindowLength) {
-        byte[] compressed = new byte[3 * bytesToCompress.length];
-        int pointerForCompressedData = 0;
-        byte[] searchSubArray;
-        int bytePointer = 0;
-        int searchWindowStart;
+    public byte[] compressBytes(byte[] originalData, int searchWindowLength, int lookAheadWindowLength) {
+        compressedData = new byte[10 * originalData.length];
+        compressedDataPointer = 0;
+        originalDataPointer = 0;
 
-        while (bytePointer < bytesToCompress.length) {
-            int offsetToBeginningOfMatch = 0;
-            int matchingBytesLength = 0;
-            searchWindowStart = this.setSearchWindowStart(bytePointer, searchWindowLength);
-            searchSubArray = this.setSearchSubArray(bytesToCompress, searchWindowStart, bytePointer);
-            byte[] searchTarget = arrayCopier.copyOfRange(bytesToCompress, bytePointer, bytePointer + 1);
-
-            if (searchSubArrayContainsSearchTarget(searchSubArray, searchTarget)) {
-                while (matchingBytesLength <= lookAheadWindowLength) {
-                    searchTarget = arrayCopier.copyOfRange(bytesToCompress, bytePointer, bytePointer + matchingBytesLength + 1);
-
-                    if (searchSubArrayContainsSearchTarget(searchSubArray, searchTarget) && ((bytePointer + matchingBytesLength + 1) < bytesToCompress.length)) {
-                        matchingBytesLength++;
-                    } else {
-                        break;
-                    }
-                }
-
-                int matchPosition = searchSubArrayIndexOfSearchTarget(searchSubArray, arrayCopier.copyOfRange(bytesToCompress, bytePointer, bytePointer + matchingBytesLength));
-                bytePointer += matchingBytesLength;
-                offsetToBeginningOfMatch = setOffsetToBeginningOfMatch(bytePointer, searchWindowLength, matchingBytesLength, matchPosition);
-            }
-
-            compressed[pointerForCompressedData++] = (byte) offsetToBeginningOfMatch;
-            compressed[pointerForCompressedData++] = (byte) matchingBytesLength;
-            compressed[pointerForCompressedData++] = bytesToCompress[bytePointer];
-
-            bytePointer++;
+        while (originalDataPointer < originalData.length) {
+            compressOneSequence(originalData, searchWindowLength, lookAheadWindowLength);
         }
+        compressedData = arrayCopier.copyOfRange(compressedData, 0, compressedDataPointer);
+        return compressedData;
+    }
 
-        compressed = arrayCopier.copyOfRange(compressed, 0, pointerForCompressedData);
+    /**
+     * Compare the contents of the current search window and of the look ahead
+     * window of the original data, find the longest match and save the
+     * information required for decompressing into the compressed data array
+     *
+     * @param originalData
+     * @param searchWindowMaxLength
+     * @param lookAheadWindowMaxLength
+     */
+    public void compressOneSequence(byte[] originalData, int searchWindowMaxLength, int lookAheadWindowMaxLength) {
+        int matchLength = 0;
+        int offsetToBeginningOfMatch = 0;
+        setSearchWindow(originalData, searchWindowMaxLength);
+        setSearchTarget(arrayCopier.copyOfRange(originalData, originalDataPointer, originalDataPointer + 1));
 
-        return compressed;
+        if (searchWindowContainsSearchTarget()) {
+            matchLength = this.findLongestMatch(originalData, matchLength, lookAheadWindowMaxLength);
+            int matchPosition = searchWindowIndexOfSearchTarget();
+            offsetToBeginningOfMatch = setOffsetToBeginningOfMatch(searchWindowMaxLength, matchLength, matchPosition);
+        }
+        addCompressedSequence(offsetToBeginningOfMatch, matchLength, originalData[originalDataPointer]);
+    }
+
+    /**
+     * Find the longest match of search target inside search window
+     *
+     * @param originalData
+     * @param matchLength
+     * @param lookAheadWindowMaxLength
+     * @return the length of the longest match
+     */
+    public int findLongestMatch(byte[] originalData, int matchLength, int lookAheadWindowMaxLength) {
+        while (matchLength <= lookAheadWindowMaxLength) {
+            searchTarget = arrayCopier.copyOfRange(originalData, originalDataPointer, originalDataPointer + matchLength + 1);
+
+            if (!(originalDataPointer + matchLength + 1 < originalData.length && searchWindowContainsSearchTarget())) {
+                break;
+            }
+            matchLength++;
+        }
+        searchTarget = arrayCopier.copyOfRange(originalData, originalDataPointer, originalDataPointer + matchLength);
+        return matchLength;
+    }
+
+    /**
+     * Set the search window based on the original data, pointer value for
+     * original data and the maximum length for search window
+     *
+     * @param originalData
+     * @param searchWindowMaxLength
+     * @return the new value for the searchWindow as a byte array
+     */
+    private void setSearchWindow(byte[] originalData, int searchWindowMaxLength) {
+        if (originalDataPointer == 0) {
+            this.searchWindow = new byte[0];
+        }
+        searchWindowStart = this.setSearchWindowStart(searchWindowMaxLength);
+        this.searchWindow = arrayCopier.copyOfRange(originalData, searchWindowStart, originalDataPointer);
+    }
+
+    /**
+     * Set the search window in which to search based on a given byte array
+     * Exists for testing purposes
+     *
+     * @param newSearchWindow
+     */
+    public void setSearchWindow(byte[] newSearchWindow) {
+        this.searchWindow = newSearchWindow;
+    }
+
+    /**
+     * Set the target to search based on a given byte array
+     *
+     * @param newSearchTarget
+     */
+    public void setSearchTarget(byte[] newSearchTarget) {
+        this.searchTarget = newSearchTarget;
     }
 
     /**
      * Set the starting index for the search window
-     * 
-     * @param bytePointer
-     * @param searchWindowLength
+     *
+     * @param searchWindowMaxLength
      * @return the new value for searchWindowStart as integer
      */
-    private int setSearchWindowStart(int bytePointer, int searchWindowLength) {
-        if (bytePointer - searchWindowLength >= 0) {
-            return bytePointer - searchWindowLength;
+    private int setSearchWindowStart(int searchWindowMaxLength) {
+        if (originalDataPointer - searchWindowMaxLength >= 0) {
+            return originalDataPointer - searchWindowMaxLength;
         }
         return 0;
     }
 
     /**
-     * Set the sub array in which to search
-     * 
-     * @param bytesToCompress
-     * @param searchWindowStart
-     * @param bytePointer
-     * @return the new value for the searchSubArray as a byte array
-     */
-    private byte[] setSearchSubArray(byte[] bytesToCompress, int searchWindowStart, int bytePointer) {
-        if (bytePointer == 0) {
-            return new byte[0];
-        }
-        return arrayCopier.copyOfRange(bytesToCompress, searchWindowStart, bytePointer);
-    }
-
-    /**
      * Find and set the offset to the beginning of match
      * 
-     * @param bytePointer
-     * @param searchWindowLength
-     * @param matchingBytesLength
+     * @param searchWindowMaxLength
+     * @param matchLength
      * @param matchPosition
      * @return the new value for offsetToBeginningOfMatch as integer
      */
-    private int setOffsetToBeginningOfMatch(int bytePointer, int searchWindowLength, int matchingBytesLength, int matchPosition) {
-        if (bytePointer < (searchWindowLength + matchingBytesLength)) {
-            return bytePointer - matchPosition - matchingBytesLength;
+    private int setOffsetToBeginningOfMatch(int searchWindowMaxLength, int matchLength, int matchPosition) {
+        originalDataPointer += matchLength;
+        if (originalDataPointer < (searchWindowMaxLength + matchLength)) {
+            return originalDataPointer - matchPosition - matchLength;
         } else {
-            return searchWindowLength - matchPosition;
+            return searchWindowMaxLength - matchPosition;
         }
     }
 
     /**
-     * Check if the sub array contains the search target
+     * Check if the current search window contains the current search target
      *
-     * @param searchSubArray
-     * @param searchTarget
      * @return true if the sub array contains the search target, false otherwise
      */
-    public boolean searchSubArrayContainsSearchTarget(byte[] searchSubArray, byte[] searchTarget) {
+    public boolean searchWindowContainsSearchTarget() {
         int targetPointer = 0;
         int searchWindowPointer = 0;
         boolean startedFindingTarget = false;
 
-        while (targetPointer < searchTarget.length && searchWindowPointer < searchSubArray.length) {
-            if (searchTarget[targetPointer] == searchSubArray[searchWindowPointer]) {
+        while (targetPointer < searchTarget.length && searchWindowPointer < searchWindow.length) {
+            if (searchTarget[targetPointer] == searchWindow[searchWindowPointer]) {
                 targetPointer++;
                 startedFindingTarget = true;
             } else if (startedFindingTarget) {
@@ -125,25 +163,22 @@ public class LZ77Compress {
     }
 
     /**
-     * Find the first index of the search target within the sub array
+     * Find the first index of the search target within the search window
      *
-     * @param searchSubArray
-     * @param searchTarget
      * @return the index as integer
      */
-    public int searchSubArrayIndexOfSearchTarget(byte[] searchSubArray, byte[] searchTarget) {
+    public int searchWindowIndexOfSearchTarget() {
         boolean contains = false;
-        for (int i = 0; i < searchSubArray.length; i++) {
+        for (int i = 0; i < searchWindow.length; i++) {
             for (int j = 0; j < searchTarget.length; j++) {
-                if (i + j >= searchSubArray.length) {
+                if (i + j >= searchWindow.length) {
                     break;
                 }
-                if (searchSubArray[i + j] != searchTarget[j]) {
+                if (searchWindow[i + j] != searchTarget[j]) {
                     contains = false;
                     break;
-                } else {
-                    contains = true;
                 }
+                contains = true;
             }
             if (contains) {
                 return i;
@@ -152,4 +187,18 @@ public class LZ77Compress {
         return -1;
     }
 
+    /**
+     * Add the compressed data related to the handled sequence into the array
+     * containing all compressed data
+     *
+     * @param offsetToBeginningOfMatch
+     * @param matchLength
+     * @param followingByte
+     */
+    private void addCompressedSequence(int offsetToBeginningOfMatch, int matchLength, byte followingByte) {
+        compressedData[compressedDataPointer++] = (byte) offsetToBeginningOfMatch;
+        compressedData[compressedDataPointer++] = (byte) matchLength;
+        compressedData[compressedDataPointer++] = followingByte;
+        originalDataPointer++;
+    }
 }

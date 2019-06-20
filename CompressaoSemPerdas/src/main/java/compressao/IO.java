@@ -23,7 +23,6 @@ public class IO {
         } catch (IOException e) {
             System.out.println("Seems like the file does not exist: " + e.getMessage());
         }
-
         return dataAsBytes;
     }
 

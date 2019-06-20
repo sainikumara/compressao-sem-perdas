@@ -57,7 +57,7 @@ public class IOTest {
         byte[] bytesFromFile = io.readBytesFromFile("test-compressed-output2");
         byte[] decompressedBytes = new byte[0];
         try {
-            decompressedBytes = decompressor.decompressBytes(bytesFromFile);
+            decompressedBytes = decompressor.decompressData(bytesFromFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

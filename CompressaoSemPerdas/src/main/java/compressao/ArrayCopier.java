@@ -17,7 +17,6 @@ public class ArrayCopier {
         for (int i = 0; i < end - beginning; i++) {
             newArray[i] = originalArray[beginning + i];
         }
-
         return newArray;
     }
 }

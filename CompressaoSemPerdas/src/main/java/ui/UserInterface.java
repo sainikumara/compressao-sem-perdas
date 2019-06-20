@@ -89,7 +89,7 @@ public class UserInterface {
         byte[] decompressedBytes;
 
         try {
-            decompressedBytes = decompressor.decompressBytes(bytesFromFile);
+            decompressedBytes = decompressor.decompressData(bytesFromFile);
             String decompressedFilename = formatFilename(filename, "_compressed", "_decompressed");
 
             io.writeBytesToFile(decompressedFilename, decompressedBytes);
@@ -118,7 +118,6 @@ public class UserInterface {
         } else {
             newFilename = filename + partToAdd;
         }
-
         return newFilename;
     }
 }
