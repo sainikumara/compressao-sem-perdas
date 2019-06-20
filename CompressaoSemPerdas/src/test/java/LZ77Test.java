@@ -50,14 +50,42 @@ public class LZ77Test {
     }
 
     @Test
-    public void searchSubArrayContainsSearchTargetWorks() {
+    public void compressOneSequenceWorks() {
+        byte[] data = "acab a abc".getBytes();
+        compressor.setOriginalDataPointer(7);
+        compressor.compressOneSequence(data, 127, 7);
+        byte[] compressedData = compressor.getCompressedData();
+
+        assertEquals(5, compressedData[0]);
+        assertEquals(2, compressedData[1]);
+        assertEquals('c', (char) compressedData[2]);
+    }
+
+    @Test
+    public void longestMatchCorrectLength() {
+        byte[] data = "acab a abc".getBytes();
+        byte[] window = "acab a ".getBytes();
+        compressor.setOriginalDataPointer(7);
+        compressor.setSearchWindow(window);
+
+        assertEquals(2, compressor.findLongestMatch(data, 0, 7));
+
+        window = "acab ".getBytes();
+        compressor.setOriginalDataPointer(5);
+        compressor.setSearchWindow(window);
+
+        assertEquals(1, compressor.findLongestMatch(data, 0, 7));
+    }
+
+    @Test
+    public void searchWindowContainsSearchTargetWorks() {
         byte[] window = "a abc".getBytes();
         byte[] target1 = "a".getBytes();
         byte[] target2 = "ab".getBytes();
         byte[] target3 = "ac".getBytes();
-        
+
         compressor.setSearchWindow(window);
-        
+
         compressor.setSearchTarget(target1);
         assertTrue(compressor.searchWindowContainsSearchTarget());
         compressor.setSearchTarget(target2);
@@ -67,14 +95,14 @@ public class LZ77Test {
     }
 
     @Test
-    public void searchSubArrayIndexOfSearchTargetWorks() {
+    public void searchWindowIndexOfSearchTargetWorks() {
         byte[] window = "a abc".getBytes();
         byte[] target1 = "a".getBytes();
         byte[] target2 = "ab".getBytes();
         byte[] target3 = "ac".getBytes();
 
         compressor.setSearchWindow(window);
-        
+
         compressor.setSearchTarget(target1);
         assertEquals(0, compressor.searchWindowIndexOfSearchTarget());
         compressor.setSearchTarget(target2);
@@ -110,6 +138,5 @@ public class LZ77Test {
 
         assertEquals(string1ToCompress, decompressedString1);
         assertEquals(string2ToCompress, decompressedString2);
-
     }
 }

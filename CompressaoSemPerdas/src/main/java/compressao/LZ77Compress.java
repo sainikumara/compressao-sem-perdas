@@ -3,8 +3,8 @@ package compressao;
 public class LZ77Compress {
 
     ArrayCopier arrayCopier = new ArrayCopier();
-    byte[] compressedData;
-    int compressedDataPointer;
+    byte[] compressedData = new byte[3]; // initialized for testing
+    int compressedDataPointer = 0; // initialized for testing
     byte[] searchWindow;
     byte[] searchTarget;
     int originalDataPointer;
@@ -19,7 +19,7 @@ public class LZ77Compress {
      * @return compressedData: compressed data as byte array
      */
     public byte[] compressBytes(byte[] originalData, int searchWindowLength, int lookAheadWindowLength) {
-        compressedData = new byte[10 * originalData.length];
+        compressedData = new byte[5 * originalData.length];
         compressedDataPointer = 0;
         originalDataPointer = 0;
 
@@ -46,7 +46,7 @@ public class LZ77Compress {
         setSearchTarget(arrayCopier.copyOfRange(originalData, originalDataPointer, originalDataPointer + 1));
 
         if (searchWindowContainsSearchTarget()) {
-            matchLength = this.findLongestMatch(originalData, matchLength, lookAheadWindowMaxLength);
+            matchLength = findLongestMatch(originalData, matchLength, lookAheadWindowMaxLength);
             int matchPosition = searchWindowIndexOfSearchTarget();
             offsetToBeginningOfMatch = setOffsetToBeginningOfMatch(searchWindowMaxLength, matchLength, matchPosition);
         }
@@ -80,9 +80,8 @@ public class LZ77Compress {
      *
      * @param originalData
      * @param searchWindowMaxLength
-     * @return the new value for the searchWindow as a byte array
      */
-    private void setSearchWindow(byte[] originalData, int searchWindowMaxLength) {
+    public void setSearchWindow(byte[] originalData, int searchWindowMaxLength) {
         if (originalDataPointer == 0) {
             this.searchWindow = new byte[0];
         }
@@ -91,7 +90,6 @@ public class LZ77Compress {
     }
 
     /**
-     * Set the search window in which to search based on a given byte array
      * Exists for testing purposes
      *
      * @param newSearchWindow
@@ -122,9 +120,13 @@ public class LZ77Compress {
         return 0;
     }
 
+    public void setOriginalDataPointer(int newPointer) {
+        this.originalDataPointer = newPointer;
+    }
+
     /**
      * Find and set the offset to the beginning of match
-     * 
+     *
      * @param searchWindowMaxLength
      * @param matchLength
      * @param matchPosition
@@ -151,8 +153,8 @@ public class LZ77Compress {
 
         while (targetPointer < searchTarget.length && searchWindowPointer < searchWindow.length) {
             if (searchTarget[targetPointer] == searchWindow[searchWindowPointer]) {
-                targetPointer++;
                 startedFindingTarget = true;
+                targetPointer++;
             } else if (startedFindingTarget) {
                 targetPointer = 0;
                 startedFindingTarget = false;
@@ -200,5 +202,14 @@ public class LZ77Compress {
         compressedData[compressedDataPointer++] = (byte) matchLength;
         compressedData[compressedDataPointer++] = followingByte;
         originalDataPointer++;
+    }
+
+    /**
+     * Exists for testing purposes
+     *
+     * @return compressedData
+     */
+    public byte[] getCompressedData() {
+        return this.compressedData;
     }
 }
