@@ -1,6 +1,5 @@
 package ui;
 
-import compressao.CompressionInfo;
 import compressao.IO;
 import compressao.LZ77Compress;
 import compressao.LZ77Decompress;
@@ -60,13 +59,13 @@ public class UserInterface {
         int searchWindowLength = 127;
         int lookAheadWindowLength = 7;
 
-        byte[] bytesToCompress = io.readBytesFromFile(filename);
-        if (bytesToCompress == null) {
+        byte[] originalData = io.readBytesFromFile(filename);
+        if (originalData == null) {
             System.out.println("No readable file.");
             return;
         }
 
-        byte[] compressedData = compressor.compressBytes(bytesToCompress, searchWindowLength, lookAheadWindowLength);
+        byte[] compressedData = compressor.compressBytes(originalData, searchWindowLength, lookAheadWindowLength);
 
         String compressedFilename = formatFilename(filename, ".", "_compressed");
         io.writeBytesToFile(compressedFilename, compressedData);
@@ -74,7 +73,7 @@ public class UserInterface {
         System.out.println("");
         System.out.println("The compressed data from " + filename + " was written into: " + compressedFilename);
 
-        info.LZ77Info(filename, compressedFilename);
+        info.LZ77Info(originalData, compressedData);
     }
 
     /**
