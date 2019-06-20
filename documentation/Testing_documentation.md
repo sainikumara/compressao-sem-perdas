@@ -16,6 +16,8 @@ mvn jacoco:report
 
 You can see the report by opening _target/site/jacoco/index.html_ on a browser.
 
+<img src="https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/jacoco_2019-06-20.png" width="450">
+
 ## Testing compression
 
 After running the program using a test file, you can observe the file sizes (for example) by running
