@@ -6,6 +6,8 @@ Data structures and algorithms Java project, implementing LZ77
 ## [Testing documentation](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Testing_documentation.md)
 ## [User guide](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/User_guide.md)
 
+## [Release](https://github.com/sainikumara/compressao_sem_perdas/releases/tag/v0.01)
+
 ## Weekly reports
 - [Week 1](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Weekly_report_1.md)
 - [Week 2](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Weekly_report_2.md)
