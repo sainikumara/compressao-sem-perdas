@@ -1,5 +1,7 @@
 package compressao;
 
+import util.ArrayCopier;
+
 public class LZ77Compress {
 
     ArrayCopier arrayCopier = new ArrayCopier();
@@ -197,10 +199,30 @@ public class LZ77Compress {
      * @param matchLength
      * @param followingByte
      */
-    private void addCompressedSequence(int offsetToBeginningOfMatch, int matchLength, byte followingByte) {
+    private void addLessCompressedSequence(int offsetToBeginningOfMatch, int matchLength, byte followingByte) {
         compressedData[compressedDataPointer++] = (byte) offsetToBeginningOfMatch;
         compressedData[compressedDataPointer++] = (byte) matchLength;
         compressedData[compressedDataPointer++] = followingByte;
+        originalDataPointer++;
+    }
+
+    /**
+     * Add the compressed data related to the handled sequence into the array
+     * containing all compressed data
+     *
+     * @param offsetToBeginningOfMatch
+     * @param matchLength
+     * @param followingByte
+     */
+    private void addCompressedSequence(int offsetToBeginningOfMatch, int matchLength, byte followingByte) {
+        compressedData[compressedDataPointer++] = (byte) matchLength;
+        if (matchLength == 0) {
+            compressedData[compressedDataPointer++] = followingByte;
+        } else {
+            compressedData[compressedDataPointer++] = (byte) offsetToBeginningOfMatch;
+            compressedData[compressedDataPointer++] = followingByte;
+        }
+
         originalDataPointer++;
     }
 

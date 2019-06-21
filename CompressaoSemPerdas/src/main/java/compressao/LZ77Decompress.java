@@ -1,11 +1,14 @@
 package compressao;
 
+import util.ArrayCopier;
 import java.io.IOException;
 
 public class LZ77Decompress {
 
     ArrayCopier arrayCopier = new ArrayCopier();
     byte[] reconstructedData;
+    int reconstructedDataPointer;
+    int compressedDataPointer;
 
     /**
      * LZ77 decompression implementation for byte array form data
@@ -14,34 +17,53 @@ public class LZ77Decompress {
      * @return byte array that has been reconstructed from compressed data
      * @throws java.io.IOException
      */
-    public byte[] decompressData(byte[] compressedData) throws IOException {
+    public byte[] decompressData(byte[] compressedData) throws IOException, NullPointerException {
         reconstructedData = new byte[10 * compressedData.length];
-        int reconstructedDataPointer = 0;
+        reconstructedDataPointer = 0;
+        compressedDataPointer = 0;
 
-        for (int i = 0; i < compressedData.length; i += 3) {
-            reconstructedDataPointer = reconstructOneSequence(reconstructedDataPointer, (int) compressedData[i], (int) compressedData[i + 1], compressedData[i + 2]);
+        while (compressedDataPointer < compressedData.length) {
+            reconstructOneSequence(compressedData);
         }
         reconstructedData = arrayCopier.copyOfRange(reconstructedData, 0, reconstructedDataPointer);
         return reconstructedData;
     }
 
     /**
+     * Reconstruct one sequence for the decompressed data based on compressed
+     * data
+     *
+     * @param compressedData
+     */
+    private void reconstructOneSequence(byte[] compressedData) {
+        int matchLength = (int) compressedData[compressedDataPointer++];
+        int offsetToBeginningOfMatch = 0;
+        byte followingByte = 0;
+        if (matchLength == 0) {
+            followingByte = compressedData[compressedDataPointer++];
+        } else {
+            offsetToBeginningOfMatch = (int) compressedData[compressedDataPointer++];
+            followingByte = compressedData[compressedDataPointer++];
+        }
+        addReconstructedSequence(matchLength, offsetToBeginningOfMatch, followingByte);
+    }
+
+    /**
      * Reconstruct a sequence of data based on one set of values from the
      * compressed data
      *
-     * @param reconstructedDataPointer
      * @param offsetToBeginningOfMatch
      * @param matchLength
      * @param followingByte
-     * @return new value for reconstructedDataPointer
      */
-    public int reconstructOneSequence(int reconstructedDataPointer, int offsetToBeginningOfMatch, int matchLength, byte followingByte) {
+    public void addReconstructedSequence(int matchLength, int offsetToBeginningOfMatch, byte followingByte) {
         if (matchLength > 0) {
             for (int j = 0; j < matchLength; j++) {
                 reconstructedData[reconstructedDataPointer++] = reconstructedData[reconstructedDataPointer - 1 - offsetToBeginningOfMatch];
             }
+            reconstructedData[reconstructedDataPointer++] = followingByte;
+        } else {
+            reconstructedData[reconstructedDataPointer++] = followingByte;
         }
-        reconstructedData[reconstructedDataPointer++] = followingByte;
-        return reconstructedDataPointer;
     }
 }

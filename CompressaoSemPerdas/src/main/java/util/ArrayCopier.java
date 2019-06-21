@@ -1,4 +1,4 @@
-package compressao;
+package util;
 
 public class ArrayCopier {
 

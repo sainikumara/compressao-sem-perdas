@@ -1,8 +1,9 @@
 package ui;
 
-import compressao.IO;
+import io.IO;
 import compressao.LZ77Compress;
 import compressao.LZ77Decompress;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -95,9 +96,11 @@ public class UserInterface {
 
             System.out.println("");
             System.out.println("The decompressed data from " + filename + " was written into: " + decompressedFilename);
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Can't complete decompression.\n"
                     + "The file " + filename + " may not be in proper format.");
+        } catch (NullPointerException e) {
+            System.out.println("Please check the spelling.");
         }
     }
 

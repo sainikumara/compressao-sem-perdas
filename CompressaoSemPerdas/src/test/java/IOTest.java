@@ -1,5 +1,5 @@
 
-import compressao.IO;
+import io.IO;
 import compressao.LZ77Compress;
 import compressao.LZ77Decompress;
 import java.io.IOException;
