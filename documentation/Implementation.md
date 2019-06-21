@@ -4,4 +4,4 @@ This Lempel-ziv 77 algorithm implementation looks at input data comparing a sear
 
 The compressed data is then saved into a file, and can be decompressed using the same application. A successful decompression needs currently the info on the length of the search window and the look-ahead-window, no header containing this information is saved with the compressed data.
 
-The major shortcoming of the current project is that, it doesn't quite reach even the file size of the original file, if the file doesn't contain a lot of reduntant information. Natural language text files and photos are slightly bigger than the original file in the "compressed form". This will hopefully be fixed once the bit packing modules are ready.
+The major shortcoming of the current project is that, it doesn't quite reach even the file size of the original file, if the file doesn't contain a lot of reduntant information. Natural language text files and photos are slightly bigger than the original file in the "compressed" form. This will hopefully be fixed once the bit packing modules are ready.
