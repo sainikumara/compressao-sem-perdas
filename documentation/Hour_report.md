@@ -39,3 +39,9 @@
 | 13-06-2019 | 7     | Refactoring project, removing unused parts, reading more about bit operations implementations |
 | 14-06-2019 | 3     | Refactoring further, fixing erroneus parts, writing new tests |
 | __total__  | __18__ |      |
+
+| Week 7     | hours | task                                                                                  |
+|------------|:-----:|---------------------------------------------------------------------------------------|
+| 20-06-2019 | 10    | Refactoring project and getting rid of redundant offset data |
+| 21-06-2019 | 11    | More refactoring, continuing with redundant data, implementing bit packing |
+| __total__  | __21__ |      |
