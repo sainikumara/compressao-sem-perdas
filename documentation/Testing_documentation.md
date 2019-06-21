@@ -29,3 +29,5 @@ ls -lh *
 ```
 
 Currently this is likely to reveal that the packaging does not in fact produce a smaller file size, but that will hopefully be fixed soon.
+
+<img src="https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/performance.png" width="500">
