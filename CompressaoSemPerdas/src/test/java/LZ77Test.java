@@ -50,18 +50,6 @@ public class LZ77Test {
     }
 
     @Test
-    public void compressOneSequenceWorks() {
-        byte[] data = "acab a abc".getBytes();
-        compressor.setOriginalDataPointer(7);
-        compressor.compressOneSequence(data, 127, 7);
-        byte[] compressedData = compressor.getCompressedData();
-
-        assertEquals(5, compressedData[0]);
-        assertEquals(2, compressedData[1]);
-        assertEquals('c', (char) compressedData[2]);
-    }
-
-    @Test
     public void longestMatchCorrectLength() {
         byte[] data = "acab a abc".getBytes();
         byte[] window = "acab a ".getBytes();
@@ -118,8 +106,8 @@ public class LZ77Test {
         byte[] compressed2 = compressor.compressBytes(string2AsBytes, searchWindowLength, lookAheadWindowLength);
         int compressed2Size = compressed2.length;
 
-        assertEquals(2580, compressed1Size);
-        assertEquals(918, compressed2Size);
+        assertEquals(2521, compressed1Size);
+        assertEquals(899, compressed2Size);
     }
 
     @Test
