@@ -1,5 +1,5 @@
 # Compressão sem perdas
-Data structures and algorithms Java project, implementing LZ77 with Huffman coding
+Data structures and algorithms Java project, implementing LZ77
 
 ## [Project Specifications](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Design_document.md)
 ## [Implementation](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Implementation.md)
