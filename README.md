@@ -1,7 +1,7 @@
 # Compressão sem perdas
 Data structures and algorithms Java project, implementing LZ77
 
-## [Project Specifications](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Design_document.md)
+## [Project Specifications](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Project_Specifications.md)
 ## [Implementation](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Implementation.md)
 ## [Testing documentation](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/Testing_documentation.md)
 ## [User guide](https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/User_guide.md)
