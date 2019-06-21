@@ -16,7 +16,9 @@ mvn jacoco:report
 
 You can see the report by opening _target/site/jacoco/index.html_ on a browser.
 
-<img src="https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/jacoco_2019-06-20.png" width="450">
+Jacoco report for the project shows 93 % test coverage. User interface classes have been left out of the report.
+
+<img src="https://github.com/sainikumara/compressao_sem_perdas/blob/master/documentation/jacoco_2019-06-20.png" width="850">
 
 ## Testing compression
 
